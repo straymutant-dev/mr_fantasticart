@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Dashboard — MR.FANTASTIC</title>
+
+<link rel="icon" type="image/svg+xml" href="/favicon/favicon.svg">
+<link rel="shortcut icon" href="/favicon/favicon.ico">
+
+<link href="https://fonts.googleapis.com/css2?family=Black+Ops+One&family=Barlow:wght@300;400;500&family=Barlow+Condensed:wght@400;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/checkout.css"> 
+<link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+
+<nav>
+  <a href="index.html" class="nav-logo">
+    <img src="images/FantasticLogo.svg" alt="MR.FANTASTIC" class="logo-img">
+  </a>
+  <div class="nav-right">
+    <span style="font-family: var(--font-condensed); letter-spacing: 4px; color: var(--red); font-size: 0.8rem; text-transform: uppercase;">Secure Portal</span>
+  </div>
+</nav>
+
+<section id="loginSection">
+  <div class="login-card">
+    <span class="section-label">Restricted Access</span>
+    <h2 style="font-family: var(--font-display); font-size: 2.5rem; margin-bottom: 2rem;">SYS<span style="color:var(--red);">ADMIN</span></h2>
+    
+    <form id="adminLoginForm">
+      <div class="cf-field" style="text-align: left; margin-bottom: 1.5rem;">
+        <label for="adminPassword">Master Password</label>
+        <input type="password" id="adminPassword" placeholder="Enter password..." required autocomplete="off">
+      </div>
+      <button type="submit" class="checkout-next-btn" id="loginBtn">Authenticate →</button>
+    </form>
+    <p id="loginError" style="color: var(--red); font-family: var(--font-condensed); font-size: 0.85rem; margin-top: 1rem; letter-spacing: 2px; display: none;">Access Denied. Incorrect Password.</p>
+  </div>
+</section>
+
+<section id="dashboardSection">
+  <div class="admin-header">
+    <div>
+      <span class="section-label">Control Room</span>
+      <h1 style="font-family: var(--font-display); font-size: 3rem; letter-spacing: 2px;">DASH<span style="color:var(--red);">BOARD</span></h1>
+    </div>
+    <button id="logoutBtn" class="checkout-back-btn">Logout ✕</button>
+  </div>
+
+ <div class="cf-grid admin-stats-grid">
+    <div class="cf-field">
+      <label>Total Revenue (GH₵)</label>
+      <div class="stat-value" id="statRevenue">GH₵0.00</div>
+    </div>
+    <div class="cf-field">
+      <label>Total Orders</label>
+      <div class="stat-value" id="statOrders">0</div>
+    </div>
+    <div class="cf-field">
+      <label>Total Artworks</label>
+      <div class="stat-value" id="statArtworks">0</div>
+    </div>
+  </div>
+
+  <div class="admin-grid">
+    <div class="admin-forms">
+      
+      <div class="admin-card" style="margin-bottom: 3rem;">
+        <h3>ADD TO <span>PORTFOLIO</span></h3>
+        <form id="portfolioUploadForm">
+          <div class="cf-grid">
+            <div class="cf-field cf-full">
+              <label>Artwork Title</label>
+              <input type="text" id="portTitle" required>
+            </div>
+            <div class="cf-field cf-full">
+              <label>Category</label>
+              <select id="portCategory" required>
+                <option value="Fan Art">Fan Art</option>
+                <option value="Original">Original</option>
+                <option value="Portrait">Portrait</option>
+                <option value="Commission">Commission</option>
+              </select>
+            </div>
+            <div class="cf-field cf-full">
+              <label>Image File (JPG/PNG)</label>
+              <input type="file" id="portFile" accept="image/*" required style="padding-top: 0.5rem;">
+            </div>
+          </div>
+          <button type="submit" class="checkout-next-btn" id="portSubmitBtn">Upload to Portfolio ↑</button>
+        </form>
+      </div>
+
+      <div class="admin-card">
+        <h3>ADD TO <span>SHOP</span></h3>
+        <form id="shopUploadForm">
+          <div class="cf-grid">
+            <div class="cf-field cf-full">
+              <label>Artwork Title</label>
+              <input type="text" id="shopTitle" required>
+            </div>
+            <div class="cf-field">
+              <label>Base Price (GH₵)</label>
+              <input type="number" id="shopPrice" placeholder="e.g. 35" required>
+            </div>
+            <div class="cf-field">
+              <label>Category</label>
+              <select id="shopCategory" required>
+                <option value="Fan Art">Fan Art</option>
+                <option value="Original">Original</option>
+                <option value="Dark Art">Dark Art</option>
+                <option value="Portrait">Portrait</option>
+              </select>
+            </div>
+            <div class="cf-field cf-full">
+              <label>Description</label>
+              <input type="text" id="shopDesc" required placeholder="Short description...">
+            </div>
+            <div class="cf-field cf-full">
+              <label>Image File (JPG/PNG)</label>
+              <input type="file" id="shopFile" accept="image/*" required style="padding-top: 0.5rem;">
+            </div>
+          </div>
+          <button type="submit" class="checkout-next-btn" id="shopSubmitBtn">Upload to Shop ↑</button>
+        </form>
+      </div>
+    </div>
+
+    <div class="admin-lists">
+      <div class="admin-card" style="margin-bottom: 3rem;">
+        <h3>RECENT <span>ORDERS</span></h3>
+        <ul class="data-list" id="orderList">
+          <li class="data-row">
+            <div class="data-info">
+              <span class="data-title">Loading...</span>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <div class="admin-card">
+        <h3>MANAGE <span>ARTWORK</span></h3>
+        <ul class="data-list" id="artworkList">
+          <li class="data-row">
+            <div class="data-info">
+              <span class="data-title">Loading...</span>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script src="js/script.js"></script>
+<script src="js/admin.js"></script>
+
+</body>
+</html>

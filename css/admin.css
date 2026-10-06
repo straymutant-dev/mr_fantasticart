@@ -1,0 +1,186 @@
+/* admin.css — Private Dashboard Styles
+   Requires: css/style.css and css/checkout.css 
+   -------------------------------------------------------- */
+
+body { 
+  background: var(--black); 
+  min-height: 100vh; 
+  display: flex; 
+  flex-direction: column; 
+}
+
+/* ── LOGIN VIEW ──────────────────────────────────────── */
+#loginSection {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  min-height: 100vh;
+  position: relative;
+  z-index: 10;
+}
+.login-card {
+  background: rgba(10, 5, 5, 0.8);
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+  border: 1px solid #333;
+  padding: 4rem;
+  width: 100%;
+  max-width: 500px;
+  text-align: center;
+  box-shadow: 0 25px 50px -12px rgba(229, 57, 53, 0.1);
+}
+
+/* ── DASHBOARD VIEW ──────────────────────────────────── */
+#dashboardSection {
+  display: none; /* Hidden until authenticated */
+  padding: 8rem 2rem 4rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.admin-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 3rem;
+  border-bottom: 1px solid #333;
+  padding-bottom: 1.5rem;
+}
+
+.admin-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: start;
+}
+
+.admin-card {
+  background: #111;
+  border: 1px solid #222;
+  padding: 2.5rem;
+}
+.admin-card h3 {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  color: var(--white);
+  letter-spacing: 2px;
+  margin-bottom: 1.5rem;
+}
+.admin-card h3 span { color: var(--red); }
+
+/* ── DASHBOARD SPECIFIC COMPONENTS ───────────────────── */
+.admin-stats-grid {
+  grid-template-columns: repeat(3, 1fr);
+  margin-bottom: 3rem;
+}
+
+.stat-value {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  color: var(--white);
+}
+
+/* Data Tables */
+.data-list { 
+  list-style: none; 
+  display: flex; 
+  flex-direction: column; 
+  gap: 1px; 
+  background: #222; 
+  max-height: 500px;
+  overflow-y: auto;
+}
+.data-list::-webkit-scrollbar { width: 4px; }
+.data-list::-webkit-scrollbar-track { background: #111; }
+.data-list::-webkit-scrollbar-thumb { background: var(--red); }
+
+.data-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--black);
+  padding: 1rem 1.5rem;
+  transition: background 0.2s;
+}
+.data-row:hover { background: #1a0a0a; }
+
+.data-info { display: flex; flex-direction: column; gap: 4px; }
+.data-title { 
+  font-family: var(--font-condensed); 
+  font-weight: 700; 
+  font-size: 1rem; 
+  text-transform: uppercase; 
+}
+.data-meta { 
+  font-family: var(--font-condensed); 
+  font-size: 0.75rem; 
+  color: #888; 
+  letter-spacing: 2px; 
+}
+
+/* Actions */
+.btn-delete {
+  background: none;
+  border: 1px solid #444;
+  color: #666;
+  padding: 0.5rem 1rem;
+  font-family: var(--font-condensed);
+  font-size: 0.7rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  cursor: none; /* Uses your custom cursor */
+  transition: all 0.2s;
+}
+.btn-delete:hover { 
+  background: var(--red); 
+  border-color: var(--red); 
+  color: var(--white); 
+}
+
+/* ── RESPONSIVE ──────────────────────────────────────── */
+@media (max-width: 900px) { 
+  .admin-grid { 
+    grid-template-columns: 1fr; 
+  } 
+  .admin-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .admin-stats-grid {
+    grid-template-columns: 1fr; /* Stack stats vertically on tablets/phones */
+  }
+}
+
+@media (max-width: 480px) {
+  #dashboardSection { 
+    padding: 6rem 1.25rem 3rem; 
+  }
+  .login-card { 
+    padding: 2.5rem 1.5rem; 
+  }
+  .admin-card { 
+    padding: 1.5rem; 
+  }
+  .btn-delete { 
+    cursor: pointer; 
+  } /* For touch devices */
+
+  /* Make data rows stack nicely so titles don't overflow */
+  .data-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+  
+  /* If you ever add delete buttons, this makes them full width on mobile for easy tapping */
+  .data-row .btn-delete {
+    width: 100%;
+    text-align: center;
+  }
+}
