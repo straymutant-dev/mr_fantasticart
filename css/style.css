@@ -35,6 +35,14 @@ body {
   cursor: none;
 }
 
+/* ── UNIVERSAL IMAGE FIXES — ADD THIS HERE ── */
+img {
+  max-width: 100%;
+  height: auto;
+  object-fit: cover; /* Prevents stretching and distortion */
+  display: block;
+}
+
 /* ── CUSTOM CURSOR ─────────────────────────────────────── */
 .cursor {
   position: fixed;

@@ -1,6 +1,7 @@
 /**
- * MR.FANTASTIC — Live Admin Dashboard Logic
- * Connected to real backend endpoints
+ * MR.FANTASTIC — DUMMY Admin Dashboard Logic
+ * UI Testing only. No backend connection. 
+ * Instant bypass enabled.
  */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -9,159 +10,59 @@ document.addEventListener('DOMContentLoaded', () => {
     const loginSection = document.getElementById('loginSection');
     const dashboardSection = document.getElementById('dashboardSection');
     const loginForm = document.getElementById('adminLoginForm');
-    const loginBtn = document.getElementById('loginBtn');
-    const loginError = document.getElementById('loginError');
     const logoutBtn = document.getElementById('logoutBtn');
 
-    // --- 1. AUTHENTICATION LOGIC ---
-    loginForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const password = document.getElementById('adminPassword').value;
-        loginBtn.textContent = 'Authenticating...';
-        loginError.style.display = 'none';
+    // --- 1. INSTANT BYPASS ON LOAD ---
+    // This immediately hides the login and shows the dashboard
+    loginSection.style.display = 'none';
+    dashboardSection.style.display = 'block';
+    loadDummyData();
 
-        try {
-            // REAL BACKEND CALL (Currently bypassed by your server.js dev mode)
-            const res = await fetch('/api/login', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ password })
-            });
-
-            if (!res.ok) throw new Error('Invalid Credentials');
-
-            loginSection.style.display = 'none';
-            dashboardSection.style.display = 'block';
-            fetchDashboardData(); // Load tables once logged in
-
-        } catch (err) {
-            loginError.style.display = 'block';
-            loginBtn.textContent = 'Authenticate →';
-        }
+    // --- 2. LOGIN BUTTON LOGIC (In case you log out and want to get back in) ---
+    loginForm.addEventListener('submit', (e) => {
+        e.preventDefault(); 
+        loginSection.style.display = 'none';
+        dashboardSection.style.display = 'block';
+        loadDummyData(); 
     });
 
+    // --- 3. LOGOUT LOGIC ---
     logoutBtn.addEventListener('click', () => {
         dashboardSection.style.display = 'none';
         loginSection.style.display = 'flex';
         document.getElementById('adminPassword').value = '';
-        loginBtn.textContent = 'Authenticate →';
     });
 
-    // --- 2. UPLOAD LOGIC ---
+    // Prevent default form submissions on the upload buttons so the page doesn't refresh
+    document.getElementById('portfolioUploadForm').addEventListener('submit', (e) => e.preventDefault());
+    document.getElementById('shopUploadForm').addEventListener('submit', (e) => e.preventDefault());
 
-    // Portfolio Upload
-    document.getElementById('portfolioUploadForm').addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const btn = document.getElementById('portSubmitBtn');
-        btn.textContent = 'Uploading...';
+    // --- 4. DUMMY DATA LOADER ---
+    function loadDummyData() {
+        // Stats
+        document.getElementById('statRevenue').textContent = "GH₵0.00";
+        document.getElementById('statOrders').textContent = "1";
+        document.getElementById('statArtworks').textContent = "1";
 
-        const formData = new FormData();
-        formData.append('title', document.getElementById('portTitle').value);
-        formData.append('category', document.getElementById('portCategory').value);
-        formData.append('image', document.getElementById('portFile').files[0]);
+        // Fake Order
+        document.getElementById('orderList').innerHTML = `
+            <li class="data-row">
+                <div class="data-info">
+                    <span class="data-title">UI Test Customer</span>
+                    <span class="data-meta">Item: UI Test Artwork · Paid: GH₵0.00 · Ref: MF_TEST_000</span>
+                </div>
+            </li>
+        `;
 
-        try {
-            const res = await fetch('/api/portfolio', { method: 'POST', body: formData });
-            if (!res.ok) throw new Error('Upload failed');
-
-            alert('Portfolio artwork uploaded successfully!');
-            e.target.reset();
-            fetchDashboardData(); // Refresh the list with the new live data
-        } catch (err) {
-            alert('Upload failed: ' + err.message);
-        } finally {
-            btn.textContent = 'Upload to Portfolio ↑';
-        }
-    });
-
-    // Shop Upload
-    document.getElementById('shopUploadForm').addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const btn = document.getElementById('shopSubmitBtn');
-        btn.textContent = 'Uploading...';
-
-        const formData = new FormData();
-        formData.append('title', document.getElementById('shopTitle').value);
-        formData.append('price', document.getElementById('shopPrice').value); // Set to GH₵ in HTML
-        formData.append('category', document.getElementById('shopCategory').value);
-        formData.append('description', document.getElementById('shopDesc').value);
-        formData.append('image', document.getElementById('shopFile').files[0]);
-
-        try {
-            const res = await fetch('/api/shop', { method: 'POST', body: formData });
-            if (!res.ok) throw new Error('Upload failed');
-
-            alert('Shop artwork uploaded successfully!');
-            e.target.reset();
-            fetchDashboardData(); // Refresh the list
-        } catch (err) {
-            alert('Upload failed: ' + err.message);
-        } finally {
-            btn.textContent = 'Upload to Shop ↑';
-        }
-    });
-
-    // --- 3. FETCH & DISPLAY LIVE DATA ---
-    async function fetchDashboardData() {
-        const orderList = document.getElementById('orderList');
-        const artworkList = document.getElementById('artworkList');
-
-        try {
-            // Fetch Real Data from the Backend
-            const [ordersRes, shopRes, portfolioRes] = await Promise.all([
-                fetch('/api/orders'),
-                fetch('/api/shop'),
-                fetch('/api/portfolio')
-            ]);
-
-            const orders = await ordersRes.json();
-            const shopItems = await shopRes.json();
-            const portfolioItems = await portfolioRes.json();
-
-            // Calculate Real Revenue in GH₵
-            const totalRevenue = orders.reduce((sum, order) => sum + parseFloat(order.amount_paid || 0), 0);
-
-            // Update Stats
-            document.getElementById('statRevenue').textContent = `GH₵${totalRevenue.toFixed(2)}`;
-            document.getElementById('statOrders').textContent = orders.length;
-            document.getElementById('statArtworks').textContent = shopItems.length + portfolioItems.length;
-
-            // Render Live Order List
-            if (orders.length === 0) {
-                orderList.innerHTML = `<li class="data-row"><div class="data-info"><span class="data-title">No orders yet</span><span class="data-meta">Sales will appear here</span></div></li>`;
-            } else {
-                orderList.innerHTML = orders.map(order => `
-                    <li class="data-row">
-                        <div class="data-info">
-                            <span class="data-title">${order.customer_name}</span>
-                            <span class="data-meta">Item: ${order.artwork_title} · Paid: GH₵${order.amount_paid} · Ref: ${order.payment_ref}</span>
-                        </div>
-                    </li>
-                `).join('');
-            }
-
-            // Render Live Artwork List
-            const allArt = [
-                ...shopItems.map(i => ({...i, source: 'shop'})),
-                ...portfolioItems.map(i => ({...i, source: 'portfolio'}))
-            ];
-
-            if (allArt.length === 0) {
-                artworkList.innerHTML = `<li class="data-row"><div class="data-info"><span class="data-title">Gallery is empty</span></div></li>`;
-            } else {
-                artworkList.innerHTML = allArt.map(art => `
-                    <li class="data-row">
-                        <div class="data-info">
-                            <span class="data-title">${art.title}</span>
-                            <span class="data-meta">${art.source.toUpperCase()} · ${art.category}</span>
-                        </div>
-                    </li>
-                `).join('');
-            }
-
-        } catch (err) {
-            console.error("Connection to backend failed:", err);
-            alert("Failed to load dashboard data. Check terminal for server errors.");
-        }
+        // Fake Artwork
+        document.getElementById('artworkList').innerHTML = `
+            <li class="data-row">
+                <div class="data-info">
+                    <span class="data-title">UI Test Artwork</span>
+                    <span class="data-meta">SHOP · UI Test</span>
+                </div>
+                <button class="btn-delete">Delete</button>
+            </li>
+        `;
     }
 });

@@ -232,14 +232,14 @@ a.about-handle:hover {
 .bts-grid {
   display: grid;
   grid-template-columns: 2fr 1fr;
-  gap: 3px;
-  align-items: stretch;
+  gap: 8px !important;
+  align-items: stretch !important;
 }
 
 .bts-col {
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  gap: 8px !important;
 }
 
 .bts-img {
@@ -247,7 +247,7 @@ a.about-handle:hover {
   position: relative;
 }
 .bts-img img {
-  width: 100%;
+  width: 100%; 
   height: 100%;
   object-fit: cover;
   display: block;
@@ -257,8 +257,10 @@ a.about-handle:hover {
 .bts-img:hover img {
   transform: scale(1.03);
 }
-.bts-img.tall { aspect-ratio: 3/4; }
-.bts-img.short { aspect-ratio: unset; flex: 1; }
+.bts-img.tall { aspect-ratio: unset !important; }
+.bts-img.short {  flex: 1 1 0% !important;
+min-height: 120px; 
+}
 
 .bts-img-caption {
   position: absolute;
