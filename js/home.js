@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!worksGrid) return;
 
     try {
-      const response = await fetch('http://127.0.0.1:8000/api/shop/items/');
+      const response = await fetch('https://mrfantastic-backend.onrender.com/api/shop/items/');
       if (!response.ok) throw new Error('Failed to retrieve storefront showcase feed');
 
       const data = await response.json();

@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!shopGrid) return;
 
     try {
-      const response = await fetch('http://127.0.0.1:8000/api/shop/items/');
+      const response = await fetch('https://mrfantastic-backend.onrender.com/api/shop/items/');
       if (!response.ok) throw new Error('Failed to fetch shop inventory');
       
       const data = await response.json();
@@ -600,7 +600,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     try {
-      const res = await fetch('http://127.0.0.1:8000/api/orders/create/', {
+      const res = await fetch('https://mrfantastic-backend.onrender.com/api/orders/create/', {
         method: 'POST',
         headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)

@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!portfolioGrid) return;
 
     try {
-      const response = await fetch('http://127.0.0.1:8000/api/portfolio/items/');
+      const response = await fetch('https://mrfantastic-backend.onrender.com/api/portfolio/items/');
       if (!response.ok) throw new Error('Portfolio stream server connection dropped');
 
       const data = await response.json();
